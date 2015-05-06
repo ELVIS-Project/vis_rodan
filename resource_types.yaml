@@ -1,0 +1,9 @@
+- mimetype: application/x-musicxml+xml
+  extension: mxl
+  description: MusicXML
+- mimetype: application/x-pandas_dataframe+csv
+  extension: csv
+  description: Pandas serialized DataFrame csv
+- mimetype: application/x-pandas_series+csv
+  extension: csv
+  description: Pandas serialized Series csv
