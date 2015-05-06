@@ -32,9 +32,10 @@ logger = logging.getLogger('rodan')
 
 class VRHorizontalIntervalIndexer(RodanTask):
 
-    name = 'vis.indexer.VF_horizontal_interval_indexer'
+    name = 'vis-rodan.indexer.VF_horizontal_interval_indexer'
     author = "Ryan Bannon"
     description = "Index horizontal intervals"
+    settings = {}
 
     enabled = True
     category = "Indexer"

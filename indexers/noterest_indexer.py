@@ -32,9 +32,10 @@ logger = logging.getLogger('rodan')
 
 class VRNoteRestIndexer(RodanTask):
 
-    name = 'vis.indexer.VF_noterest_indexer'
+    name = 'vis-rodan.indexer.VF_noterest_indexer'
     author = "Ryan Bannon"
     description = "Index note and rest objects."
+    settings = {}
 
     enabled = True
     category = "Indexer"

@@ -33,9 +33,10 @@ class VRHorizontalIntervalIndexer(RodanTask):
 
     DEFAULT_NGRAM_SIZE = 2
 
-    name = 'vis.indexer.VF_ngram_indexer'
+    name = 'vis-rodan.indexer.VF_ngram_indexer'
     author = "Ryan Bannon"
     description = "Index n-grams"
+    settings = {}
 
     enabled = True
     category = "Indexer"
