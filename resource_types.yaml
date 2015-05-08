@@ -1,5 +1,5 @@
 - mimetype: application/x-musicxml+xml
-  extension: mxl
+  extension: xml
   description: MusicXML
 - mimetype: application/x-pandas_dataframe+csv
   extension: csv
