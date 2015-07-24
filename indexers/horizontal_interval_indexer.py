@@ -35,7 +35,15 @@ class VRHorizontalIntervalIndexer(RodanTask):
     name = 'vis-rodan.indexer.VF_horizontal_interval_indexer'
     author = "Ryan Bannon"
     description = "Index horizontal intervals"
-    settings = {}
+    settings = {
+        "title": "Horizontal interval indexer settings",
+        "type": "object",
+        "required": [],
+        "properties": {
+            "simple or compound": [ "simple", "compound" ],
+            "quality": { "type": "boolean" }
+        }
+    }
 
     enabled = True
     category = "Indexer"
