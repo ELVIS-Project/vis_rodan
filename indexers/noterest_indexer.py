@@ -58,7 +58,7 @@ class VRNoteRestIndexer(RodanTask):
 
         infile = inputs['NoteRest Indexer - MusicXML'][0]['resource_path']
         outfile = outputs['NoteRest Indexer - Pandas DataFrame csv'][0]['resource_path']
-        score = [converter.parse(infile)][0]
+        score = [converter.parse(infile, format='musicxml')][0]
         indexer = NoteRestIndexer(score)
         results = indexer.run()
         results.to_csv(outfile)
