@@ -34,11 +34,26 @@ class VRVerticalIntervalIndexer(RodanTask):
 
     name = 'vis-rodan.indexer.VF_vertical_interval_indexer'
     author = "Ryan Bannon"
-    description = "Index vertical intervals"
-    settings = {}
+    description = 'Index vertical intervals'
+    settings = {
+        'title': 'Vertical interval indexer settings',
+        'type': 'object',
+        'required': [],
+        'properties': {
+            'simple or compound': {
+                'enum': [ 'simple', 'compound' ],
+                'type': 'string',
+                'default': 'simple'
+            },
+            'quality': { 
+                'type': 'boolean',
+                'default': False
+            }
+        }
+    }
 
     enabled = True
-    category = "Indexer"
+    category = 'Indexer'
     interactive = False
 
     input_port_types = [{
@@ -56,10 +71,11 @@ class VRVerticalIntervalIndexer(RodanTask):
 
     def run_my_task(self, inputs, settings, outputs):
 
+        execution_settings = dict( [(k, settings[k]) for k in ('simple or compound', 'quality')] )
         infile = inputs['Vertical Interval Indexer - indexed piece (Pandas DataFrame csv)'][0]['resource_path']
         outfile = outputs['Vertical Interval Indexer - Pandas DataFrame csv'][0]['resource_path']
         data = DataFrame.from_csv(infile, header = [0, 1]) # We know the first two rows constitute a MultiIndex
-        vertical_intervals = IntervalIndexer(data, settings).run()
+        vertical_intervals = IntervalIndexer(data, execution_settings).run()
         vertical_intervals.to_csv(outfile)
 
         return True

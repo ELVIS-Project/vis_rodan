@@ -34,7 +34,7 @@ class VRNoteRestIndexer(RodanTask):
 
     name = 'vis-rodan.indexer.VF_noterest_indexer'
     author = "Ryan Bannon"
-    description = "Index note and rest objects."
+    description = "Index note and rest objects"
     settings = {}
 
     enabled = True

@@ -35,15 +35,7 @@ class VRHorizontalIntervalIndexer(RodanTask):
     name = 'vis-rodan.indexer.VF_horizontal_interval_indexer'
     author = "Ryan Bannon"
     description = "Index horizontal intervals"
-    settings = {
-        "title": "Horizontal interval indexer settings",
-        "type": "object",
-        "required": [],
-        "properties": {
-            "simple or compound": [ "simple", "compound" ],
-            "quality": { "type": "boolean" }
-        }
-    }
+    settings = {}
 
     enabled = True
     category = "Indexer"
@@ -67,6 +59,7 @@ class VRHorizontalIntervalIndexer(RodanTask):
         infile = inputs['Horizontal Interval Indexer - indexed piece (Pandas DataFrame csv)'][0]['resource_path']
         outfile = outputs['Horizontal Interval Indexer - Pandas DataFrame csv'][0]['resource_path']
         data = DataFrame.from_csv(infile, header = [0, 1]) # We know the first two rows constitute a MultiIndex
+        #execution_settings = dict( [(k, settings[k]) for k in ('simple or compound', 'quality')] )
         horizontal_intervals = HorizontalIntervalIndexer(data, settings).run()
         horizontal_intervals.to_csv(outfile)
 
