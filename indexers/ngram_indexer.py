@@ -92,6 +92,9 @@ class VRHorizontalIntervalIndexer(RodanTask):
         if 'n' not in settings:
             settings['n'] = self.DEFAULT_NGRAM_SIZE
 
+        # Turn off multiprocessing.
+        settings['mp'] = False;
+
         # Index.
         all_intervals = concat([horizontal_intervals, vertical_intervals], axis=1)
         ngrams = NGramIndexer(all_intervals, settings).run()

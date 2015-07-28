@@ -72,6 +72,10 @@ class VRVerticalIntervalIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         execution_settings = dict( [(k, settings[k]) for k in ('simple or compound', 'quality')] )
+
+        # Turn off multiprocessing.
+        execution_settings['mp'] = False;
+        
         infile = inputs['Vertical Interval Indexer - indexed piece (Pandas DataFrame csv)'][0]['resource_path']
         outfile = outputs['Vertical Interval Indexer - Pandas DataFrame csv'][0]['resource_path']
         data = DataFrame.from_csv(infile, header = [0, 1]) # We know the first two rows constitute a MultiIndex
