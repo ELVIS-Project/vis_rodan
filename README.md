@@ -1,2 +1,2 @@
-# vis-rodan
-Wrappers for VIS Framework to work in Rodan.
+# VIS-Rodan
+Wrappers for [VIS Framework](https://github.com/ELVIS-Project/vis-framework) to work in [Rodan](https://github.com/DDMAL/Rodan).
