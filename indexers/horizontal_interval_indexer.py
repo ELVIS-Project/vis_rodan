@@ -44,12 +44,12 @@ class VRHorizontalIntervalIndexer(RodanTask):
                 'type': 'string',
                 'default': 'simple',
                 'description': 'Choose whether intervals beyond an octave will be reduced (simple) or not (compound).'
-            }#,
-#            'Interval Quality': { 
-#                'type': 'boolean',
-#                'default': False,
-#                'description': 'Choose whether intervals should include quality or not.'
-#            }
+            },
+            'Interval Quality': { 
+                'type': 'boolean',
+                'default': False,
+                'description': 'Choose whether intervals should include quality or not.'
+            }
         }
     }
 
