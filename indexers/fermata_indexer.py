@@ -32,9 +32,9 @@ logger = logging.getLogger('rodan')
 
 class VRFermataIndexer(RodanTask):
 
-    name = 'vis-rodan.indexer.VF_fermata_indexer'
+    name = 'Fermata Indexer'
     author = "Ryan Bannon"
-    description = "Index fermata objects"
+    description = "Generate indices for all fermatas in a given piece of music."
     settings = {}
 
     enabled = True
@@ -42,22 +42,22 @@ class VRFermataIndexer(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Fermata Indexer - MusicXML',
+        'name': 'MusicXML',
         'resource_types': ['application/x-musicxml+xml'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Fermata Indexer - Pandas DataFrame csv',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'Fermata Indexer Result',
+        'resource_types': ['application/x-vis_fermata_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Fermata Indexer - MusicXML'][0]['resource_path']
-        outfile = outputs['Fermata Indexer - Pandas DataFrame csv'][0]['resource_path']
+        infile = inputs['MusicXML'][0]['resource_path']
+        outfile = outputs['Fermata Indexer Result'][0]['resource_path']
         score = [converter.parse(infile, format='musicxml')][0]
         indexer = FermataIndexer(score)
         results = indexer.run()

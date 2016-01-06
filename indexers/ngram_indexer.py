@@ -29,34 +29,59 @@ from vis.analyzers.indexers.ngram import NGramIndexer
 import logging
 logger = logging.getLogger('rodan')
 
-class VRHorizontalIntervalIndexer(RodanTask):
+class VRNGramIntervalIndexer(RodanTask):
 
-    DEFAULT_NGRAM_SIZE = 2
-
-    name = 'vis-rodan.indexer.VF_ngram_indexer'
+    name = 'N-Gram Indexer'
     author = "Ryan Bannon"
-    description = "Index n-grams"
-    settings = {}
+    description = "Creates N-Grams for given vertical and horizontal indices for a piece of music."
+    settings = {
+        'title': 'N-Gram Indexer Settings',
+        'type': 'object',
+        'properties': {
+            'Horizontal voice': {
+                'description': 'If you know which voice will act as the horizontal voice, choose "integer" from above then input the voice number. Voice numbering starts at 0 for the top voice, 1 for the voice below that, and so on.<br><br>You can also choose "string" to select "top" or "bottom".',
+                'oneOf': [
+                    {
+                        'enum': [ 'bottom'],
+                        'default': 'bottom',
+                        'type': 'string'
+                    },
+                    {
+                        'type': 'integer',
+                        'default': 1,
+                        'minimum': 1
+                    }
+                ],
+                'default': 'bottom'
+            },
+            'N-Gram size': {
+                'description': 'Set the desired N-Gram size.',
+                'type': 'integer',
+                'minimum': 1,
+                'default': 2
+            }
+        }
+    }
 
     enabled = True
     category = "Indexer"
     interactive = False
 
     input_port_types = [{
-        'name': 'NGram Indexer - horizontal intervals (Pandas DataFrame csv)',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'Horizontal Interval Indexer Result',
+        'resource_types': ['application/x-vis_horizontal_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     },
     {
-        'name': 'NGram Indexer - vertical intervals (Pandas DataFrame csv)',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'Vertical Interval Indexer Result',
+        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'n-grams - Pandas DataFrame csv',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'N-Gram Indexer Result',
+        'resource_types': ['application/x-vis_ngram_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -64,40 +89,37 @@ class VRHorizontalIntervalIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         # Get files
-        horizontal_intervals_file = inputs['NGram Indexer - horizontal intervals (Pandas DataFrame csv)'][0]['resource_path']
-        vertical_intervals_file = inputs['NGram Indexer - vertical intervals (Pandas DataFrame csv)'][0]['resource_path']
-        outfile = outputs['n-grams - Pandas DataFrame csv'][0]['resource_path']
+        horizontal_intervals_file = inputs['Horizontal Interval Indexer Result'][0]['resource_path']
+        vertical_intervals_file = inputs['Vertical Interval Indexer Result'][0]['resource_path']
+        outfile = outputs['N-Gram Indexer Result'][0]['resource_path']
 
         # De-serialize the DataFrames.
         horizontal_intervals = DataFrame.from_csv(horizontal_intervals_file, header = [0, 1]) # We know the first two rows constitute a MultiIndex
         vertical_intervals = DataFrame.from_csv(vertical_intervals_file, header = [0, 1]) # We know the first two rows constitute a MultiIndex
 
-        # Get the horizontal voice if not provided.
+        # Set execution settings.
         voice_count = len(horizontal_intervals.columns)
         horizontal_voice = voice_count - 1
-        if 'horizontal' in settings:
-            horizontal_voice = int(settings['horizontal'][0][1])
-        else:
-            settings['horizontal'] = [('interval.HorizontalIntervalIndexer', str(horizontal_voice))]
+        wrapper_settings = dict( [(k, settings[k]) for k in ('Horizontal voice', 'N-Gram size')] )
+        execution_settings = dict()
+        if wrapper_settings['Horizontal voice'] == 'top':
+            horizontal_voice = 0
+        elif wrapper_settings['Horizontal voice'] != 'bottom':
+            horizontal_voice = wrapper_settings['Horizontal voice']
+        execution_settings['horizontal'] = [('interval.HorizontalIntervalIndexer', str(horizontal_voice))]
+        execution_settings['n'] = wrapper_settings['N-Gram size']
+        execution_settings['mp'] = False
 
-        # Get all possible pairs if not provided
-        if 'vertical' not in settings:
-            settings['vertical'] = []
-            suffix = ',' + str(horizontal_voice)
-            for voice in xrange(horizontal_voice):
-                pair = str(voice) + suffix
-                settings['vertical'].append(('interval.IntervalIndexer', pair))
-
-        # We also need a default for 'n'.
-        if 'n' not in settings:
-            settings['n'] = self.DEFAULT_NGRAM_SIZE
-
-        # Turn off multiprocessing.
-        settings['mp'] = False;
+        # Get all possible intervals
+        execution_settings['vertical'] = []
+        suffix = ',' + str(horizontal_voice)
+        for voice in xrange(horizontal_voice):
+            pair = str(voice) + suffix
+            execution_settings['vertical'].append(('interval.IntervalIndexer', pair))
 
         # Index.
         all_intervals = concat([horizontal_intervals, vertical_intervals], axis=1)
-        ngrams = NGramIndexer(all_intervals, settings).run()
+        ngrams = NGramIndexer(all_intervals, execution_settings).run()
 
         # Write results.
         ngrams.to_csv(outfile)

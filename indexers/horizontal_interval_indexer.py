@@ -32,27 +32,24 @@ logger = logging.getLogger('rodan')
 
 class VRHorizontalIntervalIndexer(RodanTask):
 
-    name = 'vis-rodan.indexer.VF_horizontal_interval_indexer'
+    name = 'Horizontal Interval Indexer'
     author = "Ryan Bannon"
-    description = "Index horizontal intervals"
+    description = "Generate horizontal indices for given piece of music."
     settings = {
         'title': 'Horizontal interval indexer settings',
         'type': 'object',
-        'required': [],
         'properties': {
-            'simple or compound': {
+            'Simple or Compound Intervals': {
                 'enum': [ 'simple', 'compound' ],
                 'type': 'string',
-                'default': 'simple'
-            },
-            'quality': { 
-                'type': 'boolean',
-                'default': False
-            },
-            'horiz_attach_later': { 
-                'type': 'boolean',
-                'default': False
-            }
+                'default': 'simple',
+                'description': 'Choose whether intervals beyond an octave will be reduced (simple) or not (compound).'
+            }#,
+#            'Interval Quality': { 
+#                'type': 'boolean',
+#                'default': False,
+#                'description': 'Choose whether intervals should include quality or not.'
+#            }
         }
     }
 
@@ -61,14 +58,14 @@ class VRHorizontalIntervalIndexer(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Horizontal Interval Indexer - indexed piece (Pandas DataFrame csv)',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'NoteRest Interval Indexer Result',
+        'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Horizontal Interval Indexer - Pandas DataFrame csv',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'Horizontal Interval Indexer Result',
+        'resource_types': ['application/x-vis_horizontal_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -76,18 +73,20 @@ class VRHorizontalIntervalIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         # Set execution settings.
-        execution_settings = dict( [(k, settings[k]) for k in ('simple or compound', 'quality', 'horiz_attach_later')] )
-        if execution_settings['simple or compound'] == 0:
+        wrapper_settings = dict( [(k, settings[k]) for k in ('Simple or Compound Intervals', 'Interval Quality')] )
+        execution_settings = dict()
+        if wrapper_settings['Simple or Compound Intervals'] == 0:
             execution_settings['simple or compound'] = 'simple'
         else:
             execution_settings['simple or compound'] = 'compound'
-
-        # Turn off multiprocessing.
-        execution_settings['mp'] = False;
+        execution_settings['quality'] = False#wrapper_settings['Interval Quality']
+        execution_settings['mp'] = False
+        execution_settings['horiz_attach_later'] = True
+        execution_settings['direction'] = True
         
         # Run.
-        infile = inputs['Horizontal Interval Indexer - indexed piece (Pandas DataFrame csv)'][0]['resource_path']
-        outfile = outputs['Horizontal Interval Indexer - Pandas DataFrame csv'][0]['resource_path']
+        infile = inputs['NoteRest Interval Indexer Result'][0]['resource_path']
+        outfile = outputs['Horizontal Interval Indexer Result'][0]['resource_path']
         data = DataFrame.from_csv(infile, header = [0, 1]) # We know the first two rows constitute a MultiIndex
         horizontal_intervals = HorizontalIntervalIndexer(data, execution_settings).run()
         horizontal_intervals.to_csv(outfile)
