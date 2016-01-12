@@ -81,7 +81,7 @@ class VRVerticalIntervalIndexer(RodanTask):
             execution_settings['simple or compound'] = 'compound'
         execution_settings['quality'] = wrapper_settings['Interval Quality']
         execution_settings['mp'] = False
-        execution_settings['direction'] = True
+        execution_settings['directed'] = True
         
         # Run.
         infile = inputs['NoteRest Interval Indexer Result'][0]['resource_path']

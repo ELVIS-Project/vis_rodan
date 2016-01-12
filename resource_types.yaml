@@ -38,6 +38,26 @@
   extension: csv
   description: Fermata Indexer Result (Pandas DataFrame CSV)
 
+# Figured Bass Indexer
+- mimetype: application/x-vis_figuredbass_pandas_dataframe+csv
+  extension: csv
+  description: Figured Bass Indexer Result (Pandas DataFrame CSV)
+
+# Measure Indexer
+- mimetype: application/x-vis_measure_pandas_dataframe+csv
+  extension: csv
+  description: Measure Indexer Result (Pandas DataFrame CSV)
+
+# Duration Indexer
+- mimetype: application/x-vis_duration_pandas_dataframe+csv
+  extension: csv
+  description: Duration Indexer Result (Pandas DataFrame CSV)
+
+# Note Beat Strength Indexer
+- mimetype: application/x-vis_nbs_pandas_dataframe+csv
+  extension: csv
+  description: Note Beat Strength Indexer Result (Pandas DataFrame CSV)
+
 #######################################################################################
 # Generic types
 #######################################################################################
