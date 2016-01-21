@@ -54,6 +54,11 @@ class VRHorizontalIntervalIndexer(RodanTask):
                 'type': 'boolean',
                 'default': True,
                 'description': 'Choose whether intervals should include direction or not. Descending intervals are prefixed with -. Ascending intervals will have no prefix.'
+            },
+            'Horizontal attach later': {
+                'type': 'boolean',
+                'default': True,
+                'description': 'TO REMOVE! Just know this: dissonance false, n-gram true.'
             }
         }
     }
@@ -78,7 +83,7 @@ class VRHorizontalIntervalIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         # Set execution settings.
-        wrapper_settings = dict( [(k, settings[k]) for k in ('Simple or Compound Intervals', 'Interval Quality', 'Directed')] )
+        wrapper_settings = dict( [(k, settings[k]) for k in ('Simple or Compound Intervals', 'Interval Quality', 'Directed', 'Horizontal attach later')] )
         execution_settings = dict()
         if wrapper_settings['Simple or Compound Intervals'] == 0:
             execution_settings['simple or compound'] = 'simple'
@@ -86,7 +91,7 @@ class VRHorizontalIntervalIndexer(RodanTask):
             execution_settings['simple or compound'] = 'compound'
         execution_settings['quality'] = wrapper_settings['Interval Quality']
         execution_settings['mp'] = False
-        execution_settings['horiz_attach_later'] = True
+        execution_settings['horiz_attach_later'] = wrapper_settings['Horizontal attach later']
         execution_settings['directed'] = wrapper_settings['Directed']
         
         # Run.
