@@ -33,7 +33,7 @@ class VRNoteRestDistributor(RodanTask):
 
     name = 'Note/Rest Indexer Result Distributor'
     author = "Ryan Bannon"
-    description = "Note/Rest Indexer Result distributor"
+    description = "Note/Rest Indexer Result Distributor"
     settings = {}
 
     enabled = True
