@@ -41,12 +41,12 @@ class VROffsetIndexer(RodanTask):
 			'Quarternote length': {
 				'type': 'float',
 				'default': 1.0,
+				'minimum': 0.001,
 				'description': 'The quarternote length duration between observations desired in the output.'
 			},
 			'Forward Fill': {
 				'type': 'boolean',
 				'default': True,
-				'minimum': 0.001,
 				'description': 'Forward fill fills in the missing indices with the previous value. This is useful for vertical intervals, but not for horizontal.'
 			}
 		}
