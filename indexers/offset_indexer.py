@@ -31,21 +31,23 @@ logger = logging.getLogger('rodan')
 
 class VROffsetIndexer(RodanTask):
 
-	name = 'vis-rodan.indexer.VF_offset_indexer'
+	name = 'Offset Indexer'
 	author = 'Marina Borsodi-Benson'
-	description = 'Filter by offset'
+	description = 'Filters by offset'
 	settings = {
 		'title': 'Offset Indexer Settings',
 		'type': 'object',
 		'properties': {
 			'Quarternote length': {
 				'type': 'float',
-				'default': 1.0
+				'default': 1.0,
+				'description': 'The quarternote length duration between observations desired in the output.'
 			},
-			'Method': {
-				'enum': ['ffill', 'None'],
-				'type': 'string',
-				'default': 'ffill'
+			'Forward Fill': {
+				'type': 'boolean',
+				'default': True,
+				'minimum': 0.001,
+				'description': 'Forward fill fills in the missing indices with the previous value. This is useful for vertical intervals, but not for horizontal.'
 			}
 		}
 	}
