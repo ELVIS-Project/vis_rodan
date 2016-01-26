@@ -4,7 +4,7 @@
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/indexers/ngram_indexer.py
+# Filename:               vis-rodan/indexers/noterest_indexer.py
 # Purpose:                Wrapper for NoteRest Indexer.
 #
 # Copyright (C) 2015 DDMAL
@@ -29,45 +29,19 @@ from vis.analyzers.indexers.ngram import NGramIndexer
 import logging
 logger = logging.getLogger('rodan')
 
-class VRNGramIntervalIndexer(RodanTask):
+class VRFiguredBassIndexer(RodanTask):
 
-    name = 'N-Gram Indexer'
+    name = 'Figured Bass Indexer'
     author = "Ryan Bannon"
-    description = "Creates N-Grams for given vertical and horizontal indices for a piece of music."
-    settings = {
-        'title': 'N-Gram Indexer Settings',
-        'type': 'object',
-        'properties': {
-            'Horizontal voice': {
-                'description': 'If you know which voice will act as the horizontal voice, choose "integer" from above then input the voice number. Voice numbering starts at 0 for the top voice, 1 for the voice below that, and so on.<br><br>You can also choose "string" to select "top" or "bottom".',
-                'oneOf': [
-                    {
-                        'enum': [ 'bottom'],
-                        'default': 'bottom',
-                        'type': 'string'
-                    },
-                    {
-                        'type': 'integer',
-                        'default': 1,
-                        'minimum': 1
-                    }
-                ],
-                'default': 'bottom'
-            },
-            'N-Gram size': {
-                'description': 'Set the desired N-Gram size.',
-                'type': 'integer',
-                'minimum': 1,
-                'default': 2
-            }
-        }
-    }
+    description = "Creates figured bass N-Grams. Please note that this indexer is not currently in the vis-framework as it is simply an N-Gram indexing job that places the horizontal voice in its own column."
+    settings = {}
 
     enabled = True
     category = "Indexer"
     interactive = False
 
-    input_port_types = [{
+    input_port_types = [
+    {
         'name': 'Horizontal Interval Indexer Result',
         'resource_types': ['application/x-vis_horizontal_pandas_series+csv'],
         'minimum': 1,
@@ -80,8 +54,8 @@ class VRNGramIntervalIndexer(RodanTask):
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'N-Gram Indexer Result',
-        'resource_types': ['application/x-vis_ngram_pandas_dataframe+csv'],
+        'name': 'Figured Bass Indexer Result',
+        'resource_types': ['application/x-vis_figuredbass_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -91,37 +65,44 @@ class VRNGramIntervalIndexer(RodanTask):
         # Get files
         horizontal_intervals_file = inputs['Horizontal Interval Indexer Result'][0]['resource_path']
         vertical_intervals_file = inputs['Vertical Interval Indexer Result'][0]['resource_path']
-        outfile = outputs['N-Gram Indexer Result'][0]['resource_path']
+        outfile = outputs['Figured Bass Indexer Result'][0]['resource_path']
 
         # De-serialize the DataFrames.
         horizontal_intervals = DataFrame.from_csv(horizontal_intervals_file, header = [0, 1]) # We know the first two rows constitute a MultiIndex
         vertical_intervals = DataFrame.from_csv(vertical_intervals_file, header = [0, 1]) # We know the first two rows constitute a MultiIndex
 
-        # Set execution settings.
+        # Get the horizontal voice if not provided.
         voice_count = len(horizontal_intervals.columns)
         horizontal_voice = voice_count - 1
-        wrapper_settings = dict( [(k, settings[k]) for k in ('Horizontal voice', 'N-Gram size')] )
-        execution_settings = dict()
-        if wrapper_settings['Horizontal voice'] == 'top':
-            horizontal_voice = 0
-        elif wrapper_settings['Horizontal voice'] != 'bottom':
-            horizontal_voice = wrapper_settings['Horizontal voice']
-        execution_settings['horizontal'] = [('interval.HorizontalIntervalIndexer', str(horizontal_voice))]
-        execution_settings['n'] = wrapper_settings['N-Gram size']
-        execution_settings['mp'] = False
+        settings['horizontal'] = [('interval.HorizontalIntervalIndexer', str(horizontal_voice))]
 
-        # Get all possible intervals
-        execution_settings['vertical'] = []
+        # Get all possible pairs
+        settings['vertical'] = []
         suffix = ',' + str(horizontal_voice)
+        index_pairs = ''
         for voice in xrange(horizontal_voice):
             pair = str(voice) + suffix
-            execution_settings['vertical'].append(('interval.IntervalIndexer', pair))
+            settings['vertical'].append(('interval.IntervalIndexer', pair))
+            if index_pairs == '':
+                index_pairs += '[' + pair
+            else:
+                index_pairs += ' ' + pair
+        index_pairs += '] (' + str(horizontal_voice) + ')'
+
+        # We also need a default for 'n'.
+        settings['n'] = 1
+
+        # Turn off multiprocessing.
+        settings['mp'] = False
 
         # Index.
         all_intervals = concat([horizontal_intervals, vertical_intervals], axis=1)
-        ngrams = NGramIndexer(all_intervals, execution_settings).run()
+        ngrams = NGramIndexer(all_intervals, settings).run()
+        pieces = {'Figured bass': ngrams['ngram.NGramIndexer'].T.loc[[index_pairs]].T,
+                  'Basso seguente': horizontal_intervals['interval.HorizontalIntervalIndexer'][str(horizontal_voice)]}
+        result = concat(pieces, axis = 1)
 
         # Write results.
-        ngrams.to_csv(outfile)
+        result.to_csv(outfile)
 
         return True

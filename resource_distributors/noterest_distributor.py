@@ -4,8 +4,8 @@
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/indexers/noterest_indexer.py
-# Purpose:                Wrapper for NoteRest Indexer.
+# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
+# Purpose:                Note/Rest Indexer Result distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -23,44 +23,40 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #--------------------------------------------------------------------------------------------------
 
-from music21 import converter
 from rodan.jobs.base import RodanTask
-from vis.analyzers.indexers.fermata import FermataIndexer
+from shutil import copyfile
 
 import logging
 logger = logging.getLogger('rodan')
 
-class VRFermataIndexer(RodanTask):
+class VRNoteRestDistributor(RodanTask):
 
-    name = 'Fermata Indexer'
+    name = 'Note/Rest Indexer Result Distributor'
     author = "Ryan Bannon"
-    description = "Generate indices for all fermatas in a given piece of music."
+    description = "Note/Rest Indexer Result Distributor"
     settings = {}
 
     enabled = True
-    category = "Indexer"
+    category = "Resource Distributor"
     interactive = False
 
     input_port_types = [{
-        'name': 'MusicXML',
-        'resource_types': ['application/x-musicxml+xml'],
+        'name': 'Note/Rest Indexer Result',
+        'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Fermata Indexer Result',
-        'resource_types': ['application/x-vis_fermata_pandas_dataframe+csv'],
+        'name': 'Note/Rest Indexer Result',
+        'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['MusicXML'][0]['resource_path']
-        outfile = outputs['Fermata Indexer Result'][0]['resource_path']
-        score = [converter.parse(infile, format='musicxml')][0]
-        indexer = FermataIndexer(score)
-        results = indexer.run()
-        results.to_csv(outfile)
+        infile = inputs['Note/Rest Indexer Result'][0]['resource_path']
+        outfile = outputs['Note/Rest Indexer Result'][0]['resource_path']
+        copyfile(infile, outfile)
 
         return True

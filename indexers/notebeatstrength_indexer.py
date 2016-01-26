@@ -4,8 +4,8 @@
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/indexers/noterest_indexer.py
-# Purpose:                Wrapper for NoteRest Indexer.
+# Filename:               vis-rodan/indexers/notebeatstrength_indexer.py
+# Purpose:                Wrapper for NoteBeatStrength Indexer.
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -25,16 +25,16 @@
 
 from music21 import converter
 from rodan.jobs.base import RodanTask
-from vis.analyzers.indexers.fermata import FermataIndexer
+from vis.analyzers.indexers.metre import NoteBeatStrengthIndexer
 
 import logging
 logger = logging.getLogger('rodan')
 
-class VRFermataIndexer(RodanTask):
+class VRNoteBeatStrengthIndexer(RodanTask):
 
-    name = 'Fermata Indexer'
+    name = 'Note Beat Strength Indexer'
     author = "Ryan Bannon"
-    description = "Generate indices for all fermatas in a given piece of music."
+    description = "Generate beat strength values for notes for given piece of music."
     settings = {}
 
     enabled = True
@@ -48,8 +48,8 @@ class VRFermataIndexer(RodanTask):
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Fermata Indexer Result',
-        'resource_types': ['application/x-vis_fermata_pandas_dataframe+csv'],
+        'name': 'Note Beat Strength Indexer Result',
+        'resource_types': ['application/x-vis_nbs_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -57,9 +57,9 @@ class VRFermataIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         infile = inputs['MusicXML'][0]['resource_path']
-        outfile = outputs['Fermata Indexer Result'][0]['resource_path']
+        outfile = outputs['Note Beat Strength Indexer Result'][0]['resource_path']
         score = [converter.parse(infile, format='musicxml')][0]
-        indexer = FermataIndexer(score)
+        indexer = NoteBeatStrengthIndexer(score)
         results = indexer.run()
         results.to_csv(outfile)
 

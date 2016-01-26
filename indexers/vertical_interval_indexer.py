@@ -32,22 +32,23 @@ logger = logging.getLogger('rodan')
 
 class VRVerticalIntervalIndexer(RodanTask):
 
-    name = 'vis-rodan.indexer.VF_vertical_interval_indexer'
+    name = 'Vertical Interval Indexer'
     author = "Ryan Bannon"
-    description = 'Index vertical intervals'
+    description = 'Generate vertical indices for given piece of music.'
     settings = {
-        'title': 'Vertical interval indexer settings',
+        'title': 'Vertical Interval Indexer Settings',
         'type': 'object',
-        'required': [],
         'properties': {
-            'simple or compound': {
+            'Simple or Compound Intervals': {
                 'enum': [ 'simple', 'compound' ],
                 'type': 'string',
-                'default': 'simple'
+                'default': 'simple',
+                'description': 'Choose whether intervals beyond an octave will be reduced (simple) or not (compound).'
             },
-            'quality': { 
+            'Interval Quality': { 
                 'type': 'boolean',
-                'default': False
+                'default': False,
+                'description': 'Choose whether intervals should include quality or not.'
             }
         }
     }
@@ -57,14 +58,14 @@ class VRVerticalIntervalIndexer(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Vertical Interval Indexer - indexed piece (Pandas DataFrame csv)',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'NoteRest Interval Indexer Result',
+        'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Vertical Interval Indexer - Pandas DataFrame csv',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'Vertical Interval Indexer Result',
+        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
@@ -72,18 +73,19 @@ class VRVerticalIntervalIndexer(RodanTask):
     def run_my_task(self, inputs, settings, outputs):
 
         # Set execution settings.
-        execution_settings = dict( [(k, settings[k]) for k in ('simple or compound', 'quality')] )
-        if execution_settings['simple or compound'] == 0:
+        wrapper_settings = dict( [(k, settings[k]) for k in ('Simple or Compound Intervals', 'Interval Quality')] )
+        execution_settings = dict()
+        if wrapper_settings['Simple or Compound Intervals'] == 0:
             execution_settings['simple or compound'] = 'simple'
         else:
             execution_settings['simple or compound'] = 'compound'
-
-        # Turn off multiprocessing.
-        execution_settings['mp'] = False;
+        execution_settings['quality'] = wrapper_settings['Interval Quality']
+        execution_settings['mp'] = False
+        execution_settings['directed'] = True
         
         # Run.
-        infile = inputs['Vertical Interval Indexer - indexed piece (Pandas DataFrame csv)'][0]['resource_path']
-        outfile = outputs['Vertical Interval Indexer - Pandas DataFrame csv'][0]['resource_path']
+        infile = inputs['NoteRest Interval Indexer Result'][0]['resource_path']
+        outfile = outputs['Vertical Interval Indexer Result'][0]['resource_path']
         data = DataFrame.from_csv(infile, header = [0, 1]) # We know the first two rows constitute a MultiIndex
         vertical_intervals = IntervalIndexer(data, execution_settings).run()
         vertical_intervals.to_csv(outfile)

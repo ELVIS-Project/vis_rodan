@@ -1,6 +1,66 @@
+#######################################################################################
+# Music encoding types
+#######################################################################################
 - mimetype: application/x-musicxml+xml
   extension: xml
   description: MusicXML
+
+#######################################################################################
+# Indexer types
+#######################################################################################
+# NoteRest Indexer
+- mimetype: application/x-vis_noterest_pandas_series+csv
+  extension: csv
+  description: NoteRest Indexer Result (Pandas Series CSV)
+
+# Dissonance Interval Indexer
+- mimetype: application/x-vis_dissonance_pandas_dataframe+csv
+  extension: csv
+  description: Dissonance Interval Indexer Result (Pandas DataFrame CSV)
+
+# Vertical Interval Indexer
+- mimetype: application/x-vis_vertical_pandas_series+csv
+  extension: csv
+  description: Vertical Interval Indexer Result (Pandas Series CSV)
+
+# Horizontal Interval Indexer
+- mimetype: application/x-vis_horizontal_pandas_series+csv
+  extension: csv
+  description: Horizontal Interval Indexer Result (Pandas Series CSV)
+
+# N-Gram Indexer
+- mimetype: application/x-vis_ngram_pandas_dataframe+csv
+  extension: csv
+  description: N-gram Indexer Result (Pandas DataFrame CSV)
+
+# Fermata Indexer
+- mimetype: application/x-vis_fermata_pandas_dataframe+csv
+  extension: csv
+  description: Fermata Indexer Result (Pandas DataFrame CSV)
+
+# Figured Bass Indexer
+- mimetype: application/x-vis_figuredbass_pandas_dataframe+csv
+  extension: csv
+  description: Figured Bass Indexer Result (Pandas DataFrame CSV)
+
+# Measure Indexer
+- mimetype: application/x-vis_measure_pandas_dataframe+csv
+  extension: csv
+  description: Measure Indexer Result (Pandas DataFrame CSV)
+
+# Duration Indexer
+- mimetype: application/x-vis_duration_pandas_dataframe+csv
+  extension: csv
+  description: Duration Indexer Result (Pandas DataFrame CSV)
+
+# Note Beat Strength Indexer
+- mimetype: application/x-vis_nbs_pandas_dataframe+csv
+  extension: csv
+  description: Note Beat Strength Indexer Result (Pandas DataFrame CSV)
+
+#######################################################################################
+# Generic types
+#######################################################################################
 - mimetype: application/x-pandas_dataframe+csv
   extension: csv
   description: Pandas serialized DataFrame csv

@@ -32,9 +32,9 @@ logger = logging.getLogger('rodan')
 
 class VRNoteRestIndexer(RodanTask):
 
-    name = 'vis-rodan.indexer.VF_noterest_indexer'
+    name = 'Note/Rest Indexer'
     author = "Ryan Bannon"
-    description = "Index note and rest objects"
+    description = "Generate indices for all note and rest events for a given piece of music."
     settings = {}
 
     enabled = True
@@ -42,22 +42,22 @@ class VRNoteRestIndexer(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'NoteRest Indexer - MusicXML',
+        'name': 'MusicXML',
         'resource_types': ['application/x-musicxml+xml'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'NoteRest Indexer - Pandas DataFrame csv',
-        'resource_types': ['application/x-pandas_dataframe+csv'],
+        'name': 'NoteRest Indexer Result',
+        'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['NoteRest Indexer - MusicXML'][0]['resource_path']
-        outfile = outputs['NoteRest Indexer - Pandas DataFrame csv'][0]['resource_path']
+        infile = inputs['MusicXML'][0]['resource_path']
+        outfile = outputs['NoteRest Indexer Result'][0]['resource_path']
         score = [converter.parse(infile, format='musicxml')][0]
         indexer = NoteRestIndexer(score)
         results = indexer.run()
