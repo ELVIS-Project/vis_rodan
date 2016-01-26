@@ -39,7 +39,7 @@ class VROffsetIndexer(RodanTask):
 		'type': 'object',
 		'properties': {
 			'Quarternote length': {
-				'type': 'float',
+				'type': 'number',
 				'default': 1.0,
 				'minimum': 0.001,
 				'description': 'The quarternote length duration between observations desired in the output.'
