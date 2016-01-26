@@ -77,7 +77,7 @@ class VROffsetIndexer(RodanTask):
 		wrapper_settings = dict([(k, settings[k]) for k in ('Quarternote length', 'Method')])
 		execution_settings = dict()
 		execution_settings['quarterLength'] = wrapper_settings['Quarternote length']
-		if wrapper_settings['Method'] == 0:
+		if wrapper_settings['Forward Fill'] == True:
 			execution_settings['method'] = 'ffill'
 		else:
 			execution_settings['method'] = 'None'
