@@ -25,6 +25,7 @@
 import numpy
 from pandas import concat, DataFrame
 from rodan.jobs.base import RodanTask
+from vis.analyzers.indexers.offset import FilterByOffsetIndexer
 
 import logging
 logger = logging.getLogger('rodan')
@@ -63,7 +64,7 @@ class VROffsetIndexer(RodanTask):
 		'maximum': 1,
 	}]
 	output_port_types = [{
-		'name': 'Offset Indexer Result',
+		'name': 'NoteRest Indexer Result',
 		'resource_types': ['application/x-vis_noterest_pandas_series+csv'],
 		'minimum': 1,
 		'maximum': 1
@@ -72,9 +73,9 @@ class VROffsetIndexer(RodanTask):
 	def run_my_task(self, inputs, settings, outputs):
 
 		infile = inputs['NoteRest Indexer Result'][0]['resource_path']
-		outfile = outputs['Offset Indexer Result'][0]['resource_path']
+		outfile = outputs['NoteRest Indexer Result'][0]['resource_path']
 
-		wrapper_settings = dict([(k, settings[k]) for k in ('Quarternote length', 'Method')])
+		wrapper_settings = dict([(k, settings[k]) for k in ('Quarternote length', 'Forward Fill')])
 		execution_settings = dict()
 		execution_settings['quarterLength'] = wrapper_settings['Quarternote length']
 		if wrapper_settings['Forward Fill'] == True:
@@ -83,8 +84,8 @@ class VROffsetIndexer(RodanTask):
 			execution_settings['method'] = 'None'
 		execution_settings['mp'] = False
 
-		noterest = DataFrame.from_csv(noterest_file, header = [0, 1])
-		offset_indexed = OffsetIndexer(noterest, execution_settings).run()
+		noterest = DataFrame.from_csv(infile, header = [0, 1])
+		offset_indexed = FilterByOffsetIndexer(noterest, execution_settings).run()
 		offset_indexed.to_csv(outfile)
 
 		return True
