@@ -5,7 +5,7 @@
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
 # Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Note/Rest Indexer Result distributor
+# Purpose:                NBS Indexer Result distributor
 #
 # Copyright (C) 2015 DDMAL
 #

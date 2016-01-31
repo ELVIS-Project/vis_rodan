@@ -5,7 +5,7 @@
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
 # Filename:               vis-rodan/resource_distributors/musicxml_distributor.py
-# Purpose:                MusicXML distributor
+# Purpose:                MusicXML Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
