@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Note/Rest Indexer Result distributor
+# Filename:               vis-rodan/resource_distributors/pandas_serialized_series_csv_distributor.py.py
+# Purpose:                Pandas serialized Series csv Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRVerticalIntervalDistributor(RodanTask):
+class VRPandasserializedSeriescsvDistributor(RodanTask):
 
-    name = 'Vertical Interval Indexer Result Distributor'
+    name = 'Pandas serialized Series csv Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Vertical Interval Indexer Result distributor"
+    description = "Pandas serialized Series csv Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRVerticalIntervalDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Vertical Interval Indexer Result',
-        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
+        'name': 'Pandas serialized Series csv ',
+        'resource_types': ['application/x-pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Vertical Interval Indexer Result',
-        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
+        'name': 'Pandas serialized Series csv ',
+        'resource_types': ['application/x-pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Vertical Interval Indexer Result'][0]['resource_path']
-        outfile = outputs['Vertical Interval Indexer Result'][0]['resource_path']
+        infile = inputs['Pandas serialized Series csv Distributor'][0]['resource_path']
+        outfile = outputs['Pandas serialized Series csv Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

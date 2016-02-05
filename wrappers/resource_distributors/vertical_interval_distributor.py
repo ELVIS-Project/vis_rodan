@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Measure Distributor
+# Filename:               vis-rodan/resource_distributors/vertical_interval_distributor.py.py
+# Purpose:                Vertical Interval Indexer Result Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRMeasureDistributor(RodanTask):
+class VRVerticalIntervalDistributor(RodanTask):
 
-    name = 'Measure Indexer Result Distributor'
+    name = 'Vertical Interval Indexer Result Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Measure Indexer Result Distributor"
+    description = "Vertical Interval Indexer Result Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRMeasureDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Measure Indexer Result',
-        'resource_types': ['application/x-vis_measure_pandas_dataframe+csv'],
+        'name': 'Vertical Interval Indexer Result ',
+        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Measure Indexer Result',
-        'resource_types': ['application/x-vis_measure_pandas_dataframe+csv'],
+        'name': 'Vertical Interval Indexer Result ',
+        'resource_types': ['application/x-vis_vertical_pandas_series+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Measure Indexer Result'][0]['resource_path']
-        outfile = outputs['Measure Indexer Result'][0]['resource_path']
+        infile = inputs['Vertical Interval Indexer Result Distributor'][0]['resource_path']
+        outfile = outputs['Vertical Interval Indexer Result Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                NGram Indexer Result distributor
+# Filename:               vis-rodan/resource_distributors/dissonance_interval_distributor.py.py
+# Purpose:                Dissonance Interval Indexer Result Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRNGramDistributor(RodanTask):
+class VRDissonanceIntervalDistributor(RodanTask):
 
-    name = 'NGram Indexer Result Distributor'
+    name = 'Dissonance Interval Indexer Result Distributor'
     author = "Marina Borsodi-Benson"
-    description = "NGram Indexer Result Distributor"
+    description = "Dissonance Interval Indexer Result Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRNGramDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'NGram Indexer Result',
-        'resource_types': ['application/x-vis_ngram_pandas_dataframe+csv'],
+        'name': 'Dissonance Interval Indexer Result ',
+        'resource_types': ['application/x-vis_dissonance_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'NGram Indexer Result',
-        'resource_types': ['application/x-vis_ngram_pandas_dataframe+csv'],
+        'name': 'Dissonance Interval Indexer Result ',
+        'resource_types': ['application/x-vis_dissonance_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['NGram Indexer Result'][0]['resource_path']
-        outfile = outputs['NGram Indexer Result'][0]['resource_path']
+        infile = inputs['Dissonance Interval Indexer Result Distributor'][0]['resource_path']
+        outfile = outputs['Dissonance Interval Indexer Result Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

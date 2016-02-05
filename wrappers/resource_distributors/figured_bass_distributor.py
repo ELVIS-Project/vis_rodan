@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Note/Rest Indexer Result distributor
+# Filename:               vis-rodan/resource_distributors/figured_bass_distributor.py.py
+# Purpose:                Figured Bass Indexer Result Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRHorizontalIntervalDistributor(RodanTask):
+class VRFiguredBassDistributor(RodanTask):
 
-    name = 'Horizontal Interval Indexer Result Distributor'
+    name = 'Figured Bass Indexer Result Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Horizontal Interval Indexer Result Distributor"
+    description = "Figured Bass Indexer Result Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRHorizontalIntervalDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Horizontal Interval Indexer Result',
-        'resource_types': ['application/x-vis_horizontal_pandas_series+csv'],
+        'name': 'Figured Bass Indexer Result ',
+        'resource_types': ['application/x-vis_figuredbass_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'horizontal Interval Indexer Result',
-        'resource_types': ['application/x-vis_horizontal_pandas_series+csv'],
+        'name': 'Figured Bass Indexer Result ',
+        'resource_types': ['application/x-vis_figuredbass_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Horizontal Interval Indexer Result'][0]['resource_path']
-        outfile = outputs['Horizontal Interval Indexer Result'][0]['resource_path']
+        infile = inputs['Figured Bass Indexer Result Distributor'][0]['resource_path']
+        outfile = outputs['Figured Bass Indexer Result Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

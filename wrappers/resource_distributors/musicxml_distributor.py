@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/musicxml_distributor.py
-# Purpose:                MusicXML distributor
+# Filename:               vis-rodan/resource_distributors/musicxml_distributor.py.py
+# Purpose:                MusicXML Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRDissonanceDistributor(RodanTask):
+class VRMusicXMLDistributor(RodanTask):
 
-    name = 'Dissonance Indexer Result Distributor'
+    name = 'MusicXML Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Dissonance Indexer Result Distributor"
+    description = "MusicXML Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRDissonanceDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Dissonance Indexer Result',
-        'resource_types': ['application/x-vis_dissonance_pandas_dataframe+csv'],
+        'name': 'MusicXML ',
+        'resource_types': ['application/x-musicxml+xml'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Dissonance Indexer Result',
-        'resource_types': ['application/x-vis_dissonance_pandas_dataframe+csv'],
+        'name': 'MusicXML ',
+        'resource_types': ['application/x-musicxml+xml'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Dissonance Indexer Result'][0]['resource_path']
-        outfile = outputs['Dissonance Indexer Result'][0]['resource_path']
+        infile = inputs['MusicXML Distributor'][0]['resource_path']
+        outfile = outputs['MusicXML Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Note/Rest Indexer Result distributor
+# Filename:               vis-rodan/resource_distributors/pandas_serialized_dataframe_csv_distributor.py.py
+# Purpose:                Pandas serialized DataFrame csv Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRFiguredBassDistributor(RodanTask):
+class VRPandasserializedDataFramecsvDistributor(RodanTask):
 
-    name = 'Figured Bass Indexer Result Distributor'
+    name = 'Pandas serialized DataFrame csv Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Figured Bass Indexer Result Distributor"
+    description = "Pandas serialized DataFrame csv Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRFiguredBassDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Figured Bass Indexer Result',
-        'resource_types': ['application/x-vis_figuredbass_pandas_dataframe+csv'],
+        'name': 'Pandas serialized DataFrame csv ',
+        'resource_types': ['application/x-pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Figured Bass Indexer Result',
-        'resource_types': ['application/x-vis_figuredbass_pandas_dataframe+csv'],
+        'name': 'Pandas serialized DataFrame csv ',
+        'resource_types': ['application/x-pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Figured Bass Indexer Result'][0]['resource_path']
-        outfile = outputs['Figured Bass Indexer Result'][0]['resource_path']
+        infile = inputs['Pandas serialized DataFrame csv Distributor'][0]['resource_path']
+        outfile = outputs['Pandas serialized DataFrame csv Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True

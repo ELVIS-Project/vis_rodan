@@ -1,11 +1,14 @@
+"""
+This distributor was generated from a template
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #--------------------------------------------------------------------------------------------------
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/noterest_distributor.py
-# Purpose:                Note/Rest Indexer Result distributor
+# Filename:               vis-rodan/resource_distributors/measure_distributor.py.py
+# Purpose:                Measure Indexer Result Distributor
 #
 # Copyright (C) 2015 DDMAL
 #
@@ -29,11 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
-class VRFermataDistributor(RodanTask):
+class VRMeasureDistributor(RodanTask):
 
-    name = 'Fermata Indexer Result Distributor'
+    name = 'Measure Indexer Result Distributor'
     author = "Marina Borsodi-Benson"
-    description = "Fermata Indexer Result Distributor"
+    description = "Measure Indexer Result Distributor"
     settings = {}
 
     enabled = True
@@ -41,22 +44,22 @@ class VRFermataDistributor(RodanTask):
     interactive = False
 
     input_port_types = [{
-        'name': 'Fermata Indexer Result',
-        'resource_types': ['application/x-vis_fermata_pandas_dataframe+csv'],
+        'name': 'Measure Indexer Result ',
+        'resource_types': ['application/x-vis_measure_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
     output_port_types = [{
-        'name': 'Fermata Indexer Result',
-        'resource_types': ['application/x-vis_fermata_pandas_dataframe+csv'],
+        'name': 'Measure Indexer Result ',
+        'resource_types': ['application/x-vis_measure_pandas_dataframe+csv'],
         'minimum': 1,
         'maximum': 1
     }]
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['Fermata Indexer Result'][0]['resource_path']
-        outfile = outputs['Fermata Indexer Result'][0]['resource_path']
+        infile = inputs['Measure Indexer Result Distributor'][0]['resource_path']
+        outfile = outputs['Measure Indexer Result Distributor'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True
