@@ -58,8 +58,8 @@ class <<<classname>>>(RodanTask):
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['<<<name>>>'][0]['resource_path']
-        outfile = outputs['<<<name>>>'][0]['resource_path']
+        infile = inputs['<<<input>>>'][0]['resource_path']
+        outfile = outputs['<<<input>>>'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True
