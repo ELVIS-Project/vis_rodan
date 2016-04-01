@@ -41,6 +41,8 @@ for line in contents:
 	distributor += '.py'
 
 	className += 'Distributor'
+	if '-' in className:
+		className = className.replace('-', '')
 	name += 'Distributor'
 	mimetype = line['mimetype']
 
