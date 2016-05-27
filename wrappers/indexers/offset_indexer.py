@@ -54,7 +54,7 @@ class VROffsetIndexer(RodanTask):
 	}
 
 	enabled = True
-	category = 'Indexer'
+	category = 'VIS - Indexer'
 	interactive = False
 
 	input_port_types = [{
