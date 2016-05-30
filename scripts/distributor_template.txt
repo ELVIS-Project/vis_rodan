@@ -7,7 +7,7 @@ This distributor was generated from a template
 # Program Name:           vis-rodan
 # Program Description:    Job wrappers that allows vis-framework to work in Rodan.
 #
-# Filename:               vis-rodan/resource_distributors/<<<distributor>>>.py
+# Filename:               vis-rodan/resource_distributors/<<<distributor>>>
 # Purpose:                <<<name>>>
 #
 # Copyright (C) 2015 DDMAL
@@ -32,7 +32,11 @@ from shutil import copyfile
 import logging
 logger = logging.getLogger('rodan')
 
+
 class <<<classname>>>(RodanTask):
+    """
+    Wrapper for distributing <<<input>>>s in Rodan.
+    """
 
     name = '<<<name>>>'
     author = "<<<author>>>"
@@ -58,8 +62,8 @@ class <<<classname>>>(RodanTask):
 
     def run_my_task(self, inputs, settings, outputs):
 
-        infile = inputs['<<<name>>>'][0]['resource_path']
-        outfile = outputs['<<<name>>>'][0]['resource_path']
+        infile = inputs['<<<input>>>'][0]['resource_path']
+        outfile = outputs['<<<input>>>'][0]['resource_path']
         copyfile(infile, outfile)
 
         return True
