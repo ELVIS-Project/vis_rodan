@@ -42,14 +42,14 @@ class VRNGramIntervalIndexer(RodanTask):
                 'description': 'If you know which voice will act as the horizontal voice, choose "integer" from above then input the voice number. Voice numbering starts at 0 for the top voice, 1 for the voice below that, and so on.<br><br>You can also choose "string" to select "top" or "bottom".',
                 'oneOf': [
                     {
-                        'enum': [ 'bottom'],
+                        'enum': ['top', 'bottom'],
                         'default': 'bottom',
                         'type': 'string'
                     },
                     {
                         'type': 'integer',
-                        'default': 1,
-                        'minimum': 1
+                        'default': 0,
+                        'minimum': 0
                     }
                 ],
                 'default': 'bottom'
