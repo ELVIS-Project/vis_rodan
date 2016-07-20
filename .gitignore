@@ -1,5 +1,4 @@
 *.pyc
-resource_distributors
 /.DS_Store
 
 # ignore emacs autosave file
