@@ -25,7 +25,7 @@
 
 from music21 import converter
 from rodan.jobs.base import RodanTask
-from vis.analyzers.indexers.metre import DurationIndexer
+from vis.analyzers.indexers.meter import DurationIndexer
 
 import logging
 logger = logging.getLogger('rodan')
